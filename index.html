@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: yellow;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #playlist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        #playlist li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .song-link {
+            color: #4285f4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body background="s.jpg">
+    
+    <div id="container">
+        <h1>Music Playlist Generator</h1>
+        <label for="mood">Select your mood:</label>
+        <select id="mood">
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <option value="energetic">Energetic</option>
+            <option value="chill">Chill</option>
+        </select>
+
+        <label for="genre">Select your preferred genre:</label>
+        <select id="genre">
+            <option value="pop">Pop</option>
+            <option value="rock">Rock</option>
+            <option value="hiphop">Hip Hop</option>
+            <option value="electronic">Electronic</option>
+        </select>
+
+        <button onclick="generatePlaylist()">Generate Playlist</button>
+
+        <ul id="playlist"></ul>
+    </div>
+
+    <script>
+        var playlists = {
+            happy: {
+                pop: [
+                    { title: "Happy by Pharrell Williams", link: "https://open.spotify.com/track/0eMxgAHmuvoqpLyYQrbKvQ?si=698066f66d2941b9" },
+                    { title: "Can't Stop the Feeling! by Justin Timberlake", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb" },
+                    { title: "Shut Up and Dance by Walk the Moon", link: "https://open.spotify.com/track/4kbj5MwxO1bq9wjT5g9HaA?si=b2750e984b07439c" },
+                           { title: "Good Vibrations by Marky Mark and the Funky Bunch", link: "https://open.spotify.com/track/7tf64lNC31lWlTsih0nfZf?si=de20cec77a7d4254" },
+                        { title: "I Gotta Feeling by The Black Eyed Peas", link: "https://open.spotify.com/track/4kLLWz7srcuLKA7Et40PQR?si=0a64494b0b3748a4" },
+                ],
+                rock: [
+                    { title: "Upbeat Rock Anthem", link: "https://example.com/rock-song-1" }, 
+
+                    { title: "Smile and Rock", link: "https://example.com/rock-song-2" },
+                    { title: "Positive Vibes Rock", link: "https://example.com/rock-song-3" },
+                ],
+                hiphop: [
+                    { title: "Happy Hip Hop Groove", link: "https://example.com/hiphop-song-1" },
+                    { title: "Rhythmic Joy", link: "https://example.com/hiphop-song-2" },             
+
+
+                      { title: "Feel-Good Rap", link: "https://example.com/hiphop-song-3" },
+                ],
+                electronic: [
+                    { title: "Energetic Electronica", link: "https://example.com/electronic-song-1" },     
+
+                    { title: "Digital Bliss", link: "https://example.com/electronic-song-2" },
+                    { title: "Synthwave Happiness", link: "https://example.com/electronic-song-3" },
+                ],
+            },
+            // ... (other moods and genres)
+                 
+              sad: {
+                pop: [
+                    { title: "Someone Like You by Adele", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb"},
+                    { title: "Dancing On My Own by Robyn", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb" },
+                    { title: "when We Were Young by Adele", link: "https://open.spotify.com/track/4kbj5MwxO1bq9wjT5g9HaA?si=b2750e984b07439c" },
+                        
+                ],
+                rock: [
+                    { title: "Hurt by Johnny Cash", link: "https://example.com/rock-song-1" }, 
+
+                    { title: "Everybody Hurts by R.E.M.", link: "https://example.com/rock-song-2" },
+                    { title: "The Scientist by Coldplay", link: "https://example.com/rock-song-3" },
+                ],
+                hiphop: [
+                    { title: "Stan by Eminem ft. Dido", link: "https://example.com/hiphop-song-1" },
+                    { title: "Yesterday by Atmosphere", link: "https://example.com/hiphop-song-2" },             
+
+
+                      { title: "U by Kendrick Lamar", link: "https://example.com/hiphop-song-3" },
+                ],
+                electronic: [
+                    { title: "Stay by Zedd ft. Alessia Cara", link: "https://example.com/electronic-song-1" },     
+
+                    { title: "Say My Name by ODESZA ft. Zyra", link: "https://example.com/electronic-song-2" },
+                    { title: "I Remember by Deadmau5 & Kaskade", link: "https://example.com/electronic-song-3" },
+                ],
+            },
+            
+
+            energetic: {
+                pop: [
+                    { title: "Can't Stop the Feeling! by Justin Timberlake", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb"},
+                    { title: "Shut Up and Dance by Walk the Moon", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb" },
+                    { title: "Uptown Funk by Mark Ronson ft. Bruno Mars", link: "https://open.spotify.com/track/4kbj5MwxO1bq9wjT5g9HaA?si=b2750e984b07439c" },
+                        
+                ],
+                rock: [
+                    { title: "Joker and the Thief by Wolfmother", link: "https://example.com/rock-song-1" }, 
+
+                    { title: "All My Life by Foo Fighters", link: "https://example.com/rock-song-2" },
+                    { title: "Seven Nation Army by The White Stripes", link: "https://example.com/rock-song-3" },
+                ],
+                hiphop: [
+                    { title: "SICKO MODE by Travis Scott", link: "https://example.com/hiphop-song-1" },
+                    { title: "Money Trees by Kendrick Lamar ft. Jay Rock", link: "https://example.com/hiphop-song-2" },             
+
+
+                      { title: "Bodak Yellow by Cardi B", link: "https://example.com/hiphop-song-3" },
+                ],
+                electronic: [
+                    { title: "The Middle by Zedd, Maren Morris, Grey", link: "https://example.com/electronic-song-1" },     
+
+                    { title: "Don't You Worry Child by Swedish House Mafia ft. John Martin", link: "https://example.com/electronic-song-2" },
+                    { title: "Titanium by David Guetta ft. Sia", link: "https://example.com/electronic-song-3" },
+                ],
+            },
+            chill: {
+                pop: [
+                    { title: "Lost in Japan by Shawn Mendes", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb"},
+                    { title: "Electric by Alina Baraz ft. Khalid", link: "https://open.spotify.com/track/6JV2JOEocMgcZxYSZelKcc?si=56fde79efeff48eb" },
+                    { title: "Location by Khalid", link: "https://open.spotify.com/track/4kbj5MwxO1bq9wjT5g9HaA?si=b2750e984b07439c" },
+                        
+                ],
+                rock: [
+                    { title: "Yellowby Coldplay", link: "https://example.com/rock-song-1" }, 
+
+                    { title: "Breezeblocks by Alt-J", link: "https://example.com/rock-song-2" },
+                    { title: "Island in the Sun by Weezer", link: "https://example.com/rock-song-3" },
+                ],
+                hiphop: [
+                    { title: "Sunday Candy by Donnie Trumpet & The Social Experiment", link: "https://example.com/hiphop-song-1" },
+                    { title: "Dang! by Mac Miller ft. Anderson .Paak", link: "https://example.com/hiphop-song-2" },             
+
+
+                      { title: "The Way by Kehlani ft. Chance the Rapper", link: "https://example.com/hiphop-song-3" },
+                ],
+                electronic: [
+                    { title: "Midnight City by M83", link: "https://example.com/electronic-song-1" },     
+
+                    { title: "Aqueous Transmission by Incubus", link: "https://example.com/electronic-song-2" },
+                    { title: "Teardrop by Massive Attack", link: "https://example.com/electronic-song-3" },
+                ],
+            },
+
+          
+
+
+
+
+
+
+        };
+    
+        function generatePlaylist() {
+            var mood = document.getElementById("mood").value;
+            var genre = document.getElementById("genre").value;
+
+            var playlistItems = playlists[mood][genre];
+            displayPlaylist(playlistItems);
+        }
+
+        function displayPlaylist(playlistItems) {
+            var playlistElement = document.getElementById("playlist");
+            playlistElement.innerHTML = "";
+
+            playlistItems.forEach(function (item) {
+                var li = document.createElement("li");
+                var link = document.createElement("a");
+                link.href = item.link;
+                link.textContent = item.title;
+                link.className = "song-link";
+                link.target = "_blank"; // Open link in a new tab
+                li.appendChild(link);
+                playlistElement.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
